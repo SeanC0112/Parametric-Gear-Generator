@@ -35,6 +35,7 @@ function App() {
   });
 
   const draw = (ctx, canvas) => {
+    //works kinda
     if (mouseDown) {
       ctx.fillStyle = "black";
       ctx.lineTo(mouseX, mouseY);
