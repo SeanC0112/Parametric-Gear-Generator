@@ -6,6 +6,16 @@ import heroImg from "./assets/hero.png";
 import "./App.css";
 
 function App() {
+  const [mouseX, setMouseX] = useState(0);
+  const [mouseY, setMouseY] = useState(0);
+
+  
+
+  document.addEventListener("mousemove", (event) => {
+    setMouseX(event.clientX);
+    setMouseY(event.clientY);
+  });
+
   const draw = (ctx, canvas) => {
     ctx.fillStyle = "black";
     ctx.fillRect(0, 0, canvas.width, canvas.height);
