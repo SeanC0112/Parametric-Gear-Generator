@@ -31,9 +31,10 @@ const Canvas = (props) => {
 
     resizeIfNeeded();
 
+    let animationFrameId;
     const render = () => {
       draw(context, canvas);
-      window.requestAnimationFrame(render);
+      animationFrameId = window.requestAnimationFrame(render);
     };
     render();
 
@@ -44,7 +45,9 @@ const Canvas = (props) => {
 
     return () => {
       window.removeEventListener("resize", handleResize);
-      window.cancelAnimationFrame(render);
+      if (animationFrameId) {
+        window.cancelAnimationFrame(animationFrameId);
+      }
     };
   }, [draw]);
 
