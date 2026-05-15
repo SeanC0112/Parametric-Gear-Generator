@@ -29,18 +29,26 @@ const Canvas = (props) => {
       }
     };
 
+    resizeIfNeeded();
+
     const render = () => {
       draw(context, canvas);
       window.requestAnimationFrame(render);
     };
     render();
 
+    const handleResize = () => {
+      resizeIfNeeded();
+    };
+    window.addEventListener("resize", handleResize);
+
     return () => {
+      window.removeEventListener("resize", handleResize);
       window.cancelAnimationFrame(render);
     };
   }, [draw]);
 
-  return <canvas ref={canvasRef} />;
+  return <canvas ref={canvasRef} {...props} />;
 };
 
 export default Canvas;
