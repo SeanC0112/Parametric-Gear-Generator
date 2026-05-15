@@ -9,7 +9,7 @@ function App() {
   const [mousePositions, setMousePositions] = useState([]);
 
   const [mouseDown, setMouseDown] = useState(false);
-  const [prevMouseDown, setPrevMouseDown] = useState(false);
+  const prevMouseDown = useRef(false);
 
   useEffect(() => {
     const handleMouseDown = (event) => {
@@ -19,7 +19,6 @@ function App() {
 
     const handleMouseUp = (event) => {
       setMouseDown(false);
-      setMousePositions([]);
       // console.log("Mouse up at:", event.clientX, event.clientY);
     };
 
@@ -47,10 +46,11 @@ function App() {
   }, []);
 
   const draw = (ctx, canvas) => {
-    if (!prevMouseDown && mouseDown) {
+    if (!prevMouseDown.current && mouseDown) {
       ctx.beginPath();
       ctx.fillStyle = "white";
       ctx.clearRect(0, 0, canvas.width, canvas.height);
+      setMousePositions([]);
     } else if (mouseDown) {
       ctx.fillStyle = "black";
       if (mousePositions.length > 1) {
@@ -61,7 +61,7 @@ function App() {
         ctx.stroke();
       }
     }
-    setPrevMouseDown(mouseDown);
+    prevMouseDown.current = mouseDown;
   };
 
   return (
