@@ -1,4 +1,4 @@
-import { useState, useRef, useEffect } from "react";
+import { useState, useRef, useEffect, useCallback } from "react";
 import Canvas from "./canvas.jsx";
 import reactLogo from "./assets/react.svg";
 import viteLogo from "./assets/vite.svg";
@@ -10,6 +10,7 @@ function App() {
 
   const [mouseDown, setMouseDown] = useState(false);
   const prevMouseDown = useRef(false);
+  const animationFrameId = useRef(null);
 
   useEffect(() => {
     const handleMouseDown = (event) => {
@@ -25,10 +26,14 @@ function App() {
     const handleMouseMove = (event) => {
       setMouseDown((prevMouseDown) => {
         if (prevMouseDown) {
-          setMousePositions((prevPositions) => [
-            ...prevPositions,
-            { x: event.clientX, y: event.clientY },
-          ]);
+          setMousePositions((prevPositions) => {
+            const newPositions = [
+              ...prevPositions,
+              { x: event.clientX, y: event.clientY },
+            ];
+            // Keep only last 1000 positions to prevent memory buildup
+            return newPositions;
+          });
         }
         return prevMouseDown;
       });
@@ -45,24 +50,31 @@ function App() {
     };
   }, []);
 
-  const draw = (ctx, canvas) => {
-    if (!prevMouseDown.current && mouseDown) {
-      ctx.beginPath();
-      ctx.fillStyle = "white";
-      ctx.clearRect(0, 0, canvas.width, canvas.height);
-      setMousePositions([]);
-    } else if (mouseDown) {
-      ctx.fillStyle = "black";
-      if (mousePositions.length > 1) {
-        const prevPos = mousePositions[mousePositions.length - 2];
-        const pos = mousePositions[mousePositions.length - 1];
-        moveTo(prevPos.x, prevPos.y);
-        ctx.lineTo(pos.x, pos.y);
-        ctx.stroke();
+  const draw = useCallback(
+    (ctx, canvas) => {
+      if (!prevMouseDown.current && mouseDown) {
+        ctx.beginPath();
+        ctx.fillStyle = "white";
+        ctx.clearRect(0, 0, canvas.width, canvas.height);
+        setMousePositions([]);
+      } else if (mouseDown) {
+        ctx.fillStyle = "black";
+        if (mousePositions.length > 1) {
+          const prevPos = mousePositions[mousePositions.length - 2];
+          const pos = mousePositions[mousePositions.length - 1];
+          // moveTo(prevPos.x, prevPos.y);
+          ctx.lineTo(pos.x, pos.y);
+          ctx.stroke();
+        } else if (mousePositions.length === 1) {
+          const pos = mousePositions[0];
+          beginPath();
+          // ctx.moveTo(pos.x, pos.y);
+        }
       }
-    }
-    prevMouseDown.current = mouseDown;
-  };
+      prevMouseDown.current = mouseDown;
+    },
+    [mouseDown, mousePositions],
+  );
 
   return (
     <>
