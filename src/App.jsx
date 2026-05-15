@@ -59,15 +59,15 @@ function App() {
         setMousePositions([]);
       } else if (mouseDown) {
         ctx.fillStyle = "black";
-        if (mousePositions.length > 1) {
+        if (mousePositions.length > 2) {
           const prevPos = mousePositions[mousePositions.length - 2];
           const pos = mousePositions[mousePositions.length - 1];
           // moveTo(prevPos.x, prevPos.y);
           ctx.lineTo(pos.x, pos.y);
           ctx.stroke();
-        } else if (mousePositions.length === 1) {
+        } else if (mousePositions.length > 1) {
           const pos = mousePositions[0];
-          beginPath();
+          ctx.beginPath();
           // ctx.moveTo(pos.x, pos.y);
         }
       }
