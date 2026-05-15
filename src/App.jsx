@@ -79,7 +79,14 @@ function App() {
   return (
     <>
       <div className="w-full h-full">
+        <p className="text-2xl text-center mt-4 fixed">
+          Draw shape to be converted to parametric equation
+        </p>
         <Canvas className="w-full h-full block" draw={draw} />
+        <button className="absolute top-4 right-4 bg-gray-800 text-white px-4 py-2 rounded fixed">
+          {" "}
+          Submit{" "}
+        </button>
       </div>
     </>
   );
