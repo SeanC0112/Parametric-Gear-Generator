@@ -1,4 +1,4 @@
-import { useState, useRef } from "react";
+import { useState, useRef, useEffect } from "react";
 import Canvas from "./canvas.jsx";
 import reactLogo from "./assets/react.svg";
 import viteLogo from "./assets/vite.svg";
@@ -6,51 +6,68 @@ import heroImg from "./assets/hero.png";
 import "./App.css";
 
 function App() {
-  const [mouseX, setMouseX] = useState(0);
-  const [mouseY, setMouseY] = useState(0);
+  const [mousePositions, setMousePositions] = useState([]);
 
   const [mouseDown, setMouseDown] = useState(false);
+  const [prevMouseDown, setPrevMouseDown] = useState(false);
 
-  document.addEventListener(
-    "mousedown",
-    (event) => {
+  useEffect(() => {
+    const handleMouseDown = (event) => {
       setMouseDown(true);
-      console.log("Mouse down at:", event.clientX, event.clientY);
-    },
-    false,
-  );
+      // console.log("Mouse down at:", event.clientX, event.clientY);
+    };
 
-  document.addEventListener(
-    "mouseup",
-    (event) => {
+    const handleMouseUp = (event) => {
       setMouseDown(false);
-      console.log("Mouse up at:", event.clientX, event.clientY);
-    },
-    false,
-  );
+      setMousePositions([]);
+      // console.log("Mouse up at:", event.clientX, event.clientY);
+    };
 
-  document.addEventListener("mousemove", (event) => {
-    setMouseX(event.clientX);
-    setMouseY(event.clientY);
-  });
+    const handleMouseMove = (event) => {
+      setMouseDown((prevMouseDown) => {
+        if (prevMouseDown) {
+          setMousePositions((prevPositions) => [
+            ...prevPositions,
+            { x: event.clientX, y: event.clientY },
+          ]);
+        }
+        return prevMouseDown;
+      });
+    };
+
+    document.addEventListener("mousedown", handleMouseDown, false);
+    document.addEventListener("mouseup", handleMouseUp, false);
+    document.addEventListener("mousemove", handleMouseMove);
+
+    return () => {
+      document.removeEventListener("mousedown", handleMouseDown, false);
+      document.removeEventListener("mouseup", handleMouseUp, false);
+      document.removeEventListener("mousemove", handleMouseMove);
+    };
+  }, []);
 
   const draw = (ctx, canvas) => {
-    //works kinda
-    if (mouseDown) {
-      ctx.fillStyle = "black";
-      ctx.lineTo(mouseX, mouseY);
-      ctx.stroke();
-      console.log("Drawing at:", mouseX, mouseY);
-    } else {
+    if (!prevMouseDown && mouseDown) {
+      ctx.beginPath();
       ctx.fillStyle = "white";
-      ctx.fillRect(0, 0, canvas.width, canvas.height);
+      ctx.clearRect(0, 0, canvas.width, canvas.height);
+    } else if (mouseDown) {
+      ctx.fillStyle = "black";
+      if (mousePositions.length > 1) {
+        const prevPos = mousePositions[mousePositions.length - 2];
+        const pos = mousePositions[mousePositions.length - 1];
+        moveTo(prevPos.x, prevPos.y);
+        ctx.lineTo(pos.x, pos.y);
+        ctx.stroke();
+      }
     }
+    setPrevMouseDown(mouseDown);
   };
 
   return (
     <>
-      <div className="App">
-        <Canvas className="canvas" draw={draw} />
+      <div className="w-full h-full">
+        <Canvas className="w-full h-full block" draw={draw} />
       </div>
     </>
   );
