@@ -40,23 +40,23 @@ function App() {
     };
 
     const handleMouseMove = (event) => {
-      setMouseDown((prevMouseDown) => {
-        if (prevMouseDown) {
-          setMousePositions((prevPositions) => {
-            const newPositions = [
-              ...prevPositions,
-              { x: event.clientX, y: event.clientY },
-            ];
-            // Keep only last 1000 positions to prevent memory buildup
-            console.log(mousePositions);
-
-            return newPositions;
-          });
-        }
+      // setMouseDown((prevMouseDown) => {
+      //   if (prevMouseDown) {
+      setMousePositions((prevPositions) => {
+        const newPositions = [
+          ...prevPositions,
+          { x: event.clientX, y: event.clientY },
+        ];
+        // Keep only last 1000 positions to prevent memory buildup
         console.log(mousePositions);
 
-        return prevMouseDown;
+        return newPositions;
       });
+      // }
+      console.log(mousePositions);
+
+      //   return prevMouseDown;
+      // });
     };
 
     document.addEventListener('mousedown', handleMouseDown, false);
