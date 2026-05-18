@@ -19,13 +19,9 @@ function App() {
 
   const handleSubmit = useCallback(() => {
     if (mousePositions.length > 1) {
-      const { tempGearOne, tempGearTwo } = generateGearsFromPath(
-        mousePositions,
-        10,
-        0.5
-      );
-      setGearOne(tempGearOne);
-      setGearTwo(tempGearTwo);
+      const { xPath, yPath } = generateGearsFromPath(mousePositions, 100, 0.5);
+      setGearOne(xPath);
+      setGearTwo(yPath);
       setIsSubmit(true);
     }
   }, [mousePositions]);
@@ -94,28 +90,32 @@ function App() {
     [mouseDown, mousePositions]
   );
 
-  const drawGears = useCallback((ctx, canvas) => {
-    ctx.clearRect(0, 0, canvas.width, canvas.height);
-    ctx.fillStyle = 'white';
-    ctx.fillRect(0, 0, canvas.width, canvas.height);
-    ctx.fillStyle = 'black';
-    ctx.beginPath();
-    gearOne.forEach((point, index) => {
-      if (index === 0) {
-        ctx.moveTo(point.x, point.y);
-      } else {
-        ctx.lineTo(point.x, point.y);
-      }
-    });
-    gearTwo.forEach((point, index) => {
-      if (index === 0) {
-        ctx.moveTo(point.x, point.y);
-      } else {
-        ctx.lineTo(point.x, point.y);
-      }
-    });
-    ctx.stroke();
-  });
+  const drawGears = useCallback(
+    (ctx, canvas) => {
+      ctx.clearRect(0, 0, canvas.width, canvas.height);
+      ctx.fillStyle = 'white';
+      ctx.fillRect(0, 0, canvas.width, canvas.height);
+      ctx.fillStyle = 'black';
+      ctx.beginPath();
+      gearOne.forEach((point, index) => {
+        if (index === 0) {
+          ctx.moveTo(point.x, point.y);
+        } else {
+          ctx.lineTo(point.x, point.y);
+        }
+      });
+      gearTwo.forEach((point, index) => {
+        if (index === 0) {
+          ctx.moveTo(point.x, point.y);
+        } else {
+          ctx.lineTo(point.x, point.y);
+        }
+      });
+      ctx.stroke();
+      console.log(gearOne);
+    },
+    [gearOne, gearTwo]
+  );
 
   return isSubmit ? (
     <Canvas className="w-full h-full block" draw={drawGears} />
