@@ -18,6 +18,8 @@ function App() {
   const [isSubmit, setIsSubmit] = useState(false);
 
   const handleSubmit = useCallback(() => {
+    console.log(mousePositions);
+
     if (mousePositions.length > 1) {
       const { xPath, yPath } = generateGearsFromPath(mousePositions, 100, 0.5);
       setGearOne(xPath);
@@ -46,9 +48,13 @@ function App() {
               { x: event.clientX, y: event.clientY },
             ];
             // Keep only last 1000 positions to prevent memory buildup
+            console.log(mousePositions);
+
             return newPositions;
           });
         }
+        console.log(mousePositions);
+
         return prevMouseDown;
       });
     };
