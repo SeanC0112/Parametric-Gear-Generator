@@ -19,9 +19,13 @@ function App() {
 
   const handleSubmit = useCallback(() => {
     if (mousePositions.length > 1) {
-      const { gearOne, gearTwo } = generateGearsFromPath(mousePositions);
-      setGearOne(gearOne);
-      setGearTwo(gearTwo);
+      const { tempGearOne, tempGearTwo } = generateGearsFromPath(
+        mousePositions,
+        10,
+        0.5
+      );
+      setGearOne(tempGearOne);
+      setGearTwo(tempGearTwo);
       setIsSubmit(true);
     }
   }, [mousePositions]);
