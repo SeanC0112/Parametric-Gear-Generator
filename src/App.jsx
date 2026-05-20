@@ -21,12 +21,30 @@ function App() {
     console.log(mousePositions);
 
     if (mousePositions.length > 1) {
-      const { xPath, yPath } = generateGearsFromPath(mousePositions, 100, 0.5);
+      const { xPath, yPath } = generateGearsFromPath(mousePositions, 50, 0.5);
       setGearOne(xPath);
       setGearTwo(yPath);
       setIsSubmit(true);
     }
   }, [mousePositions]);
+
+  const buttonRef = useRef(null);
+  const [isOverButton, setIsOverButton] = useState(false);
+
+  useEffect(() => {
+    const el = buttonRef.current;
+
+    const handleMouseEnter = () => setIsOverButton(true);
+    const handleMouseLeave = () => setIsOverButton(false);
+
+    el.addEventListener('mouseenter', handleMouseEnter);
+    el.addEventListener('mouseleave', handleMouseLeave);
+
+    return () => {
+      el.removeEventListener('mouseenter', handleMouseEnter);
+      el.removeEventListener('mouseleave', handleMouseLeave);
+    };
+  }, []);
 
   useEffect(() => {
     const handleMouseDown = (event) => {
@@ -40,23 +58,19 @@ function App() {
     };
 
     const handleMouseMove = (event) => {
-      // setMouseDown((prevMouseDown) => {
-      //   if (prevMouseDown) {
-      setMousePositions((prevPositions) => {
-        const newPositions = [
-          ...prevPositions,
-          { x: event.clientX, y: event.clientY },
-        ];
-        // Keep only last 1000 positions to prevent memory buildup
-        console.log(mousePositions);
-
-        return newPositions;
+      setMouseDown((prevMouseDown) => {
+        if (prevMouseDown) {
+          setMousePositions((prevPositions) => {
+            const newPositions = [
+              ...prevPositions,
+              { x: event.clientX, y: event.clientY },
+            ];
+            // Keep only last 1000 positions to prevent memory buildup
+            return newPositions;
+          });
+        }
+        return prevMouseDown;
       });
-      // }
-      console.log(mousePositions);
-
-      //   return prevMouseDown;
-      // });
     };
 
     document.addEventListener('mousedown', handleMouseDown, false);
@@ -72,12 +86,12 @@ function App() {
 
   const draw = useCallback(
     (ctx, canvas) => {
-      if (!prevMouseDown.current && mouseDown) {
+      if (!prevMouseDown.current && mouseDown && !isOverButton) {
         ctx.beginPath();
         ctx.fillStyle = 'white';
         ctx.clearRect(0, 0, canvas.width, canvas.height);
         setMousePositions([]);
-      } else if (mouseDown) {
+      } else if (mouseDown && !isOverButton) {
         ctx.fillStyle = 'black';
         if (mousePositions.length > 2) {
           const prevPos = mousePositions[mousePositions.length - 2];
@@ -93,7 +107,7 @@ function App() {
       }
       prevMouseDown.current = mouseDown;
     },
-    [mouseDown, mousePositions]
+    [mouseDown, mousePositions, isOverButton]
   );
 
   const drawGears = useCallback(
@@ -105,16 +119,22 @@ function App() {
       ctx.beginPath();
       gearOne.forEach((point, index) => {
         if (index === 0) {
-          ctx.moveTo(point.x, point.y);
+          ctx.moveTo(point.x + canvas.width / 4, point.y + canvas.height / 2);
         } else {
-          ctx.lineTo(point.x, point.y);
+          ctx.lineTo(point.x + canvas.width / 4, point.y + canvas.height / 2);
         }
       });
       gearTwo.forEach((point, index) => {
         if (index === 0) {
-          ctx.moveTo(point.x, point.y);
+          ctx.moveTo(
+            point.x + (3 * canvas.width) / 4,
+            point.y + canvas.height / 2
+          );
         } else {
-          ctx.lineTo(point.x, point.y);
+          ctx.lineTo(
+            point.x + (3 * canvas.width) / 4,
+            point.y + canvas.height / 2
+          );
         }
       });
       ctx.stroke();
@@ -133,6 +153,7 @@ function App() {
         </p>
         <Canvas className="w-full h-full block" draw={draw} />
         <button
+          ref={buttonRef}
           className="absolute top-4 right-4 bg-gray-800 text-white px-4 py-2 rounded fixed"
           onClick={handleSubmit}
         >
