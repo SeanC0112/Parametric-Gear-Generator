@@ -117,6 +117,14 @@ function App() {
       ctx.fillRect(0, 0, canvas.width, canvas.height);
       ctx.fillStyle = 'black';
       ctx.beginPath();
+      ctx.arc(canvas.width / 4, canvas.height / 2, 10, 0, 2 * Math.PI);
+      ctx.fill();
+      ctx.stroke();
+      ctx.beginPath();
+      ctx.arc((3 * canvas.width) / 4, canvas.height / 2, 10, 0, 2 * Math.PI);
+      ctx.fill();
+      ctx.stroke();
+      ctx.beginPath();
       gearOne.forEach((point, index) => {
         if (index === 0) {
           ctx.moveTo(point.x + canvas.width / 4, point.y + canvas.height / 2);
