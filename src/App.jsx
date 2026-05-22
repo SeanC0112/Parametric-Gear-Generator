@@ -101,15 +101,15 @@ function App() {
     (ctx, canvas) => {
       if (!prevMouseDown.current && mouseDown && !isOverButton) {
         ctx.beginPath();
-        ctx.fillStyle = 'white';
         ctx.clearRect(0, 0, canvas.width, canvas.height);
         setMousePositions([]);
       } else if (mouseDown && !isOverButton) {
-        ctx.fillStyle = 'black';
         if (mousePositions.length > 2) {
           const prevPos = mousePositions[mousePositions.length - 2];
           const pos = mousePositions[mousePositions.length - 1];
           // moveTo(prevPos.x, prevPos.y);
+          ctx.strokeStyle = 'white';
+
           ctx.lineTo(pos.x, pos.y);
           ctx.stroke();
         } else if (mousePositions.length > 1) {
@@ -134,17 +134,18 @@ function App() {
   const drawGears = useCallback(
     (ctx, canvas) => {
       ctx.clearRect(0, 0, canvas.width, canvas.height);
+      // ctx.fillStyle = 'white';
+      // ctx.fillRect(0, 0, canvas.width, canvas.height);
       ctx.fillStyle = 'white';
-      ctx.fillRect(0, 0, canvas.width, canvas.height);
-      ctx.fillStyle = 'black';
-      drawCircle(ctx, canvas, canvas.width / 4, canvas.height / 2, 10, 'black');
+      ctx.strokeStyle = 'white';
+      drawCircle(ctx, canvas, canvas.width / 4, canvas.height / 2, 10, 'white');
       drawCircle(
         ctx,
         canvas,
         (3 * canvas.width) / 4,
         canvas.height / 2,
         10,
-        'black'
+        'white'
       );
       ctx.beginPath();
       gearOne.forEach((point, index) => {
@@ -181,37 +182,34 @@ function App() {
   );
 
   return isSubmit ? (
-    isAnimate ? (
-      <Canvas className="w-full h-full block" draw={animateGears} />
-    ) : (
-      <>
-        <button
-          className="absolute top-4 right-4 bg-gray-800 text-white px-4 py-2 rounded fixed"
-          onClick={handleAnimate}
-        >
-          {' '}
-          Animate{' '}
-        </button>
-        <Canvas className="w-full h-full block" draw={drawGears} />
-      </>
-    )
+    <div className="gears-output">
+      {isAnimate ? (
+        <Canvas
+          className="gears-canvas w-full h-full block"
+          draw={animateGears}
+        />
+      ) : (
+        <>
+          <button className="submit-button" onClick={handleAnimate}>
+            Animate
+          </button>
+          <Canvas
+            className="gears-canvas w-full h-full block"
+            draw={drawGears}
+          />
+        </>
+      )}
+    </div>
   ) : (
-    <>
-      <div className="w-full h-full">
-        <p className="text-2xl text-center mt-4 fixed">
-          Draw shape to be converted to parametric equation
-        </p>
-        <Canvas className="w-full h-full block" draw={draw} />
-        <button
-          ref={buttonRef}
-          className="absolute top-4 right-4 bg-gray-800 text-white px-4 py-2 rounded fixed"
-          onClick={handleSubmit}
-        >
-          {' '}
-          Submit{' '}
-        </button>
-      </div>
-    </>
+    <div className="canvas-container">
+      <p className="instruction-text">
+        Draw shape to be converted to parametric equation
+      </p>
+      <Canvas className="w-full h-full block" draw={draw} />
+      <button ref={buttonRef} className="submit-button" onClick={handleSubmit}>
+        Submit
+      </button>
+    </div>
   );
 }
 
