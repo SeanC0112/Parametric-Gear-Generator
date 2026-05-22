@@ -16,11 +16,15 @@ function App() {
   const animationFrameId = useRef(null);
 
   const [isSubmit, setIsSubmit] = useState(false);
+  const [isAnimate, setIsAnimate] = useState(false);
 
   const handleSubmit = useCallback(() => {
     console.log(mousePositions);
 
     if (mousePositions.length > 1) {
+      setMousePositions(mousePositions.slice(0, -2));
+      console.log(mousePositions);
+      console.log('hi');
       const { xPath, yPath } = generateGearsFromPath(
         mousePositions.slice(0, -2),
         50
@@ -29,7 +33,7 @@ function App() {
       setGearTwo(yPath);
       setIsSubmit(true);
     }
-  }, [mousePositions]);
+  }, [mousePositions, setMousePositions]);
 
   const buttonRef = useRef(null);
   const [isOverButton, setIsOverButton] = useState(false);
