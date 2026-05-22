@@ -110,20 +110,29 @@ function App() {
     [mouseDown, mousePositions, isOverButton]
   );
 
+  const drawCircle = (ctx, canvas, x, y, radius, fillStyle) => {
+    ctx.fillStyle = fillStyle;
+    ctx.beginPath();
+    ctx.arc(x, y, radius, 0, 2 * Math.PI);
+    ctx.fill();
+    ctx.stroke();
+  };
+
   const drawGears = useCallback(
     (ctx, canvas) => {
       ctx.clearRect(0, 0, canvas.width, canvas.height);
       ctx.fillStyle = 'white';
       ctx.fillRect(0, 0, canvas.width, canvas.height);
       ctx.fillStyle = 'black';
-      ctx.beginPath();
-      ctx.arc(canvas.width / 4, canvas.height / 2, 10, 0, 2 * Math.PI);
-      ctx.fill();
-      ctx.stroke();
-      ctx.beginPath();
-      ctx.arc((3 * canvas.width) / 4, canvas.height / 2, 10, 0, 2 * Math.PI);
-      ctx.fill();
-      ctx.stroke();
+      drawCircle(ctx, canvas, canvas.width / 4, canvas.height / 2, 10, 'black');
+      drawCircle(
+        ctx,
+        canvas,
+        (3 * canvas.width) / 4,
+        canvas.height / 2,
+        10,
+        'black'
+      );
       ctx.beginPath();
       gearOne.forEach((point, index) => {
         if (index === 0) {
