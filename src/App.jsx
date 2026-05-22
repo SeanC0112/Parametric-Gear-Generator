@@ -23,8 +23,7 @@ function App() {
     if (mousePositions.length > 1) {
       const { xPath, yPath } = generateGearsFromPath(
         mousePositions.slice(0, -2),
-        50,
-        0.5
+        50
       );
       setGearOne(xPath);
       setGearTwo(yPath);
