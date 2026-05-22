@@ -37,6 +37,10 @@ function App() {
     }
   }, [mousePositions, setMousePositions]);
 
+  const handleAnimate = useCallback(() => {
+    setIsAnimate(true);
+  }, [setIsAnimate]);
+
   const buttonRef = useRef(null);
   const [isOverButton, setIsOverButton] = useState(false);
 
@@ -180,7 +184,16 @@ function App() {
     isAnimate ? (
       <Canvas className="w-full h-full block" draw={animateGears} />
     ) : (
-      <Canvas className="w-full h-full block" draw={drawGears} />
+      <>
+        <button
+          className="absolute top-4 right-4 bg-gray-800 text-white px-4 py-2 rounded fixed"
+          onClick={handleAnimate}
+        >
+          {' '}
+          Animate{' '}
+        </button>
+        <Canvas className="w-full h-full block" draw={drawGears} />
+      </>
     )
   ) : (
     <>
