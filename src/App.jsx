@@ -8,6 +8,8 @@ import './App.css';
 
 function App() {
   const [mousePositions, setMousePositions] = useState([]);
+  const [savedMousePositions, setSavedMousePositions] = useState([]);
+
   const [gearOne, setGearOne] = useState([]);
   const [gearTwo, setGearTwo] = useState([]);
 
@@ -22,7 +24,7 @@ function App() {
     console.log(mousePositions);
 
     if (mousePositions.length > 1) {
-      setMousePositions(mousePositions.slice(0, -2));
+      setSavedMousePositions(mousePositions.slice(0, -2));
       console.log(mousePositions);
       console.log('hi');
       const { xPath, yPath } = generateGearsFromPath(
@@ -167,8 +169,19 @@ function App() {
     [gearOne, gearTwo]
   );
 
+  const animateGears = useCallback(
+    (ctx, canvas) => {
+      ctx.clearRect(0, 0, canvas.width, canvas.height);
+    },
+    [gearOne, gearTwo]
+  );
+
   return isSubmit ? (
-    <Canvas className="w-full h-full block" draw={drawGears} />
+    isAnimate ? (
+      <Canvas className="w-full h-full block" draw={animateGears} />
+    ) : (
+      <Canvas className="w-full h-full block" draw={drawGears} />
+    )
   ) : (
     <>
       <div className="w-full h-full">
