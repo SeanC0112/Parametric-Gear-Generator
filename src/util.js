@@ -11,19 +11,19 @@ export function generateGearsFromPath(path, baseRadius, toothScalar) {
     xPath.push({
       x:
         (baseRadius + (point.x - minX) * toothScalar) *
-        Math.cos((index / length) * 2 * Math.PI),
+        Math.cos(-(index / (length - 1)) * 2 * Math.PI),
       y:
         (baseRadius + (point.x - minX) * toothScalar) *
-        Math.sin((index / length) * 2 * Math.PI),
+        Math.sin(-(index / (length - 1)) * 2 * Math.PI),
     });
 
     yPath.push({
       x:
         (baseRadius + (point.y - minY) * toothScalar) *
-        Math.cos((index / length) * 2 * Math.PI),
+        Math.cos(-(index / (length - 1)) * 2 * Math.PI),
       y:
         (baseRadius + (point.y - minY) * toothScalar) *
-        Math.sin((index / length) * 2 * Math.PI),
+        Math.sin(-(index / (length - 1)) * 2 * Math.PI),
     });
   });
 

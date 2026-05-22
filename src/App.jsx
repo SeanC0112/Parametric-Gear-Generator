@@ -21,7 +21,11 @@ function App() {
     console.log(mousePositions);
 
     if (mousePositions.length > 1) {
-      const { xPath, yPath } = generateGearsFromPath(mousePositions, 50, 0.5);
+      const { xPath, yPath } = generateGearsFromPath(
+        mousePositions.slice(0, -2),
+        50,
+        0.5
+      );
       setGearOne(xPath);
       setGearTwo(yPath);
       setIsSubmit(true);
@@ -147,7 +151,7 @@ function App() {
             point.x + (3 * canvas.width) / 4,
             point.y + canvas.height / 2
           );
-        } else {
+        } else /*{if (index < gearTwo.length - 2)}*/ {
           ctx.lineTo(
             point.x + (3 * canvas.width) / 4,
             point.y + canvas.height / 2
