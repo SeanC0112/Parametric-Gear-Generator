@@ -131,11 +131,38 @@ function App() {
     ctx.stroke();
   };
 
+  const drawGear = (ctx, canvas, gear, centerX, centerY, angle) => {
+    ctx.save();
+
+    ctx.translate(centerX, centerY);
+    ctx.rotate(angle);
+
+    ctx.fillStyle = 'white';
+    ctx.strokeStyle = 'white';
+
+    drawCircle(ctx, canvas, 0, 0, 10, 'white');
+
+    ctx.beginPath();
+
+    gear.forEach((point, index) => {
+      if (index === 0) {
+        ctx.moveTo(point.x, point.y);
+      } else {
+        ctx.lineTo(point.x, point.y);
+      }
+    });
+
+    ctx.stroke();
+
+    ctx.restore();
+  };
+
   const drawGears = useCallback(
     (ctx, canvas) => {
       ctx.clearRect(0, 0, canvas.width, canvas.height);
       // ctx.fillStyle = 'white';
       // ctx.fillRect(0, 0, canvas.width, canvas.height);
+
       ctx.fillStyle = 'white';
       ctx.strokeStyle = 'white';
       drawCircle(ctx, canvas, canvas.width / 4, canvas.height / 2, 10, 'white');
