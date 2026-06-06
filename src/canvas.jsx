@@ -1,4 +1,4 @@
-import React, { useRef, useEffect, useState } from "react";
+import React, { useRef, useEffect, useState } from 'react';
 
 const Canvas = (props) => {
   const canvasRef = useRef(null);
@@ -10,7 +10,7 @@ const Canvas = (props) => {
 
   useEffect(() => {
     const canvas = canvasRef.current;
-    const context = canvas.getContext("2d");
+    const context = canvas.getContext('2d');
 
     // canvas.width = width;
     // canvas.height = height;
@@ -41,10 +41,10 @@ const Canvas = (props) => {
     const handleResize = () => {
       resizeIfNeeded();
     };
-    window.addEventListener("resize", handleResize);
+    window.addEventListener('resize', handleResize);
 
     return () => {
-      window.removeEventListener("resize", handleResize);
+      window.removeEventListener('resize', handleResize);
       if (animationFrameId) {
         window.cancelAnimationFrame(animationFrameId);
       }
