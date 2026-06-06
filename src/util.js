@@ -31,5 +31,8 @@ export function generateGearsFromPath(path, baseRadius) {
     });
   });
 
+  xPath.push(xPath[0]);
+  yPath.push(yPath[0]);
+
   return { xPath, yPath };
 }
