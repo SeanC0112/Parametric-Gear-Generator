@@ -20,6 +20,8 @@ function App() {
   const [isSubmit, setIsSubmit] = useState(false);
   const [isAnimate, setIsAnimate] = useState(false);
 
+  const [animationStart, setAnimationStart] = useState(0);
+
   const handleSubmit = useCallback(() => {
     console.log(mousePositions);
 
@@ -39,7 +41,8 @@ function App() {
 
   const handleAnimate = useCallback(() => {
     setIsAnimate(true);
-  }, [setIsAnimate]);
+    setAnimationStart(performance.now());
+  }, [setIsAnimate, setAnimationStart]);
 
   const buttonRef = useRef(null);
   const [isOverButton, setIsOverButton] = useState(false);
@@ -135,6 +138,8 @@ function App() {
     ctx.save();
 
     ctx.translate(centerX, centerY);
+
+    angle = (angle * Math.PI) / 180;
     ctx.rotate(angle);
 
     ctx.fillStyle = 'white';
@@ -179,9 +184,30 @@ function App() {
 
   const animateGears = useCallback(
     (ctx, canvas) => {
+      let fps = 60;
+      let currentTime = performance.now();
+      let deltaTime = currentTime - animationStart;
+      let angle = (deltaTime / 1000) * fps; // Rotate 60 degrees per second
       ctx.clearRect(0, 0, canvas.width, canvas.height);
+      drawGear(
+        ctx,
+        canvas,
+        gearOne,
+        canvas.width / 4,
+        canvas.height / 2,
+        angle
+      );
+
+      drawGear(
+        ctx,
+        canvas,
+        gearTwo,
+        (3 * canvas.width) / 4,
+        canvas.height / 2,
+        angle
+      );
     },
-    [gearOne, gearTwo]
+    [gearOne, gearTwo, animationStart]
   );
 
   return isSubmit ? (
