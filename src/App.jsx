@@ -163,40 +163,16 @@ function App() {
       // ctx.fillStyle = 'white';
       // ctx.fillRect(0, 0, canvas.width, canvas.height);
 
-      ctx.fillStyle = 'white';
-      ctx.strokeStyle = 'white';
-      drawCircle(ctx, canvas, canvas.width / 4, canvas.height / 2, 10, 'white');
-      drawCircle(
+      drawGear(ctx, canvas, gearOne, canvas.width / 4, canvas.height / 2, 0);
+
+      drawGear(
         ctx,
         canvas,
+        gearTwo,
         (3 * canvas.width) / 4,
         canvas.height / 2,
-        10,
-        'white'
+        0
       );
-      ctx.beginPath();
-      gearOne.forEach((point, index) => {
-        if (index === 0) {
-          ctx.moveTo(point.x + canvas.width / 4, point.y + canvas.height / 2);
-        } else {
-          ctx.lineTo(point.x + canvas.width / 4, point.y + canvas.height / 2);
-        }
-      });
-      gearTwo.forEach((point, index) => {
-        if (index === 0) {
-          ctx.moveTo(
-            point.x + (3 * canvas.width) / 4,
-            point.y + canvas.height / 2
-          );
-        } else /*{if (index < gearTwo.length - 2)}*/ {
-          ctx.lineTo(
-            point.x + (3 * canvas.width) / 4,
-            point.y + canvas.height / 2
-          );
-        }
-      });
-      ctx.stroke();
-      console.log(gearOne);
     },
     [gearOne, gearTwo]
   );
