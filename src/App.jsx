@@ -134,7 +134,7 @@ function App() {
     ctx.stroke();
   };
 
-  const drawGear = (ctx, canvas, gear, centerX, centerY, angle) => {
+  const drawGear = (ctx, canvas, gear, centerX, centerY, angle, scale) => {
     ctx.save();
 
     ctx.translate(centerX, centerY);
@@ -151,9 +151,9 @@ function App() {
 
     gear.forEach((point, index) => {
       if (index === 0) {
-        ctx.moveTo(point.x, point.y);
+        ctx.moveTo(point.x * scale, point.y * scale);
       } else {
-        ctx.lineTo(point.x, point.y);
+        ctx.lineTo(point.x * scale, point.y * scale);
       }
     });
 
@@ -168,7 +168,7 @@ function App() {
       // ctx.fillStyle = 'white';
       // ctx.fillRect(0, 0, canvas.width, canvas.height);
 
-      drawGear(ctx, canvas, gearOne, canvas.width / 4, canvas.height / 2, 0);
+      drawGear(ctx, canvas, gearOne, canvas.width / 4, canvas.height / 2, 0, 1);
 
       drawGear(
         ctx,
@@ -176,7 +176,8 @@ function App() {
         gearTwo,
         (3 * canvas.width) / 4,
         canvas.height / 2,
-        0
+        0,
+        1
       );
     },
     [gearOne, gearTwo]
@@ -195,7 +196,8 @@ function App() {
         gearOne,
         canvas.width / 4,
         canvas.height / 2,
-        angle
+        angle,
+        1
       );
 
       drawGear(
@@ -204,7 +206,8 @@ function App() {
         gearTwo,
         (3 * canvas.width) / 4,
         canvas.height / 2,
-        angle
+        angle,
+        1
       );
     },
     [gearOne, gearTwo, animationStart]
