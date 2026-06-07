@@ -189,26 +189,17 @@ function App() {
       let currentTime = performance.now();
       let deltaTime = currentTime - animationStart;
       let angle = (deltaTime / 1000) * fps; // Rotate 60 degrees per second
-      ctx.clearRect(0, 0, canvas.width, canvas.height);
-      drawGear(
-        ctx,
-        canvas,
-        gearOne,
-        canvas.width / 4,
-        canvas.height / 2,
-        angle,
-        1
-      );
 
-      drawGear(
-        ctx,
-        canvas,
-        gearTwo,
-        (3 * canvas.width) / 4,
-        canvas.height / 2,
-        angle,
-        1
-      );
+      let gearOneX = canvas.width / 4;
+      let gearOneY = canvas.height / 2;
+
+      let gearTwoX = canvas.width / 2; //move up above center
+      let gearTwoY = canvas.height / 4;
+
+      ctx.clearRect(0, 0, canvas.width, canvas.height);
+
+      drawGear(ctx, canvas, gearOne, gearOneX, gearOneY, angle, 1);
+      drawGear(ctx, canvas, gearTwo, gearTwoX, gearTwoY, angle, 1);
     },
     [gearOne, gearTwo, animationStart]
   );
