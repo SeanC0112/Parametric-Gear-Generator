@@ -145,8 +145,6 @@ function App() {
     ctx.fillStyle = 'white';
     ctx.strokeStyle = 'white';
 
-    drawCircle(ctx, canvas, 0, 0, 10, 'white');
-
     ctx.beginPath();
 
     gear.forEach((point, index) => {
@@ -156,8 +154,10 @@ function App() {
         ctx.lineTo(point.x * scale, point.y * scale);
       }
     });
-
+    ctx.fill();
     ctx.stroke();
+
+    drawCircle(ctx, canvas, 0, 0, 10, '#0f3460');
 
     ctx.restore();
   };
@@ -199,7 +199,7 @@ function App() {
       ctx.clearRect(0, 0, canvas.width, canvas.height);
 
       drawGear(ctx, canvas, gearOne, gearOneX, gearOneY, angle, 1);
-      drawGear(ctx, canvas, gearTwo, gearTwoX, gearTwoY, angle, 1);
+      drawGear(ctx, canvas, gearTwo, gearTwoX, gearTwoY, angle + 90, 1);
     },
     [gearOne, gearTwo, animationStart]
   );
