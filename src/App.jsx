@@ -134,6 +134,14 @@ function App() {
     ctx.stroke();
   };
 
+  const drawLine = (ctx, canvas, x1, y1, x2, y2, strokeStyle) => {
+    ctx.strokeStyle = strokeStyle;
+    ctx.beginPath();
+    ctx.moveTo(x1, y1);
+    ctx.lineTo(x2, y2);
+    ctx.stroke();
+  };
+
   const drawGear = (ctx, canvas, gear, centerX, centerY, angle, scale) => {
     ctx.save();
 
@@ -200,6 +208,64 @@ function App() {
 
       drawGear(ctx, canvas, gearOne, gearOneX, gearOneY, angle, 1);
       drawGear(ctx, canvas, gearTwo, gearTwoX, gearTwoY, angle + 90, 1);
+
+      let arrLength = gearOne.length;
+      let fraqIndex = (angle / 360) * (arrLength - 1);
+      let prevIndex = Math.floor(fraqIndex) % (arrLength - 1);
+      let nextIndex = (prevIndex + 1) % (arrLength - 1);
+
+      let deltaGearOne =
+        (Math.sqrt(
+          Math.pow(gearOne[nextIndex].x, 2) + Math.pow(gearOne[nextIndex].y, 2)
+        ) -
+          Math.sqrt(
+            Math.pow(gearOne[prevIndex].x, 2) +
+              Math.pow(gearOne[prevIndex].y, 2)
+          )) *
+        (fraqIndex - prevIndex);
+
+      let gearOneDist =
+        Math.sqrt(
+          Math.pow(gearOne[nextIndex].x, 2) + Math.pow(gearOne[nextIndex].y, 2)
+        ) + deltaGearOne;
+
+      let deltaGearTwo =
+        (Math.sqrt(
+          Math.pow(gearTwo[nextIndex].x, 2) + Math.pow(gearTwo[nextIndex].y, 2)
+        ) -
+          Math.sqrt(
+            Math.pow(gearTwo[prevIndex].x, 2) +
+              Math.pow(gearTwo[prevIndex].y, 2)
+          )) *
+        (fraqIndex - prevIndex);
+
+      let gearTwoDist =
+        Math.sqrt(
+          Math.pow(gearTwo[nextIndex].x, 2) + Math.pow(gearTwo[nextIndex].y, 2)
+        ) + deltaGearTwo;
+
+      //TODO yay magic numbers i need to fix (half of the normalization scalar fo the gear gen code)
+      let horizontalLineLength = (gearTwoX - gearOneX - 100) / 2;
+      let verticalLineLength = (gearOneY - gearTwoY - 100) / 2;
+
+      drawLine(
+        ctx,
+        canvas,
+        gearOneX + gearOneDist,
+        gearOneY,
+        gearOneX + gearOneDist + horizontalLineLength,
+        gearOneY,
+        'white'
+      );
+      drawLine(
+        ctx,
+        canvas,
+        gearTwoX,
+        gearTwoY + gearTwoDist,
+        gearTwoX,
+        gearTwoY + gearTwoDist + verticalLineLength,
+        'white'
+      );
     },
     [gearOne, gearTwo, animationStart]
   );
