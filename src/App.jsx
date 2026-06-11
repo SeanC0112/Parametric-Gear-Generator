@@ -315,51 +315,64 @@ function App() {
     [gearOne, gearTwo, animationStart, normScalar]
   );
 
-  return isSubmit ? (
-    <div className="gears-output">
-      {isAnimate ? (
-        <>
-          <Canvas
-            className="gears-canvas w-full h-full block"
-            draw={animateGears}
-          />
-          <button
-            className="submit-button"
-            onClick={() => {
-              setIsAnimate(false);
-              setIsSubmit(false);
-              setMousePositions([]);
-              setGearOne([]);
-              setGearTwo([]);
-              drawPositionsRef.current = [];
-              prevMouseDown.current = false;
-              setIsOverButton(false);
-            }}
-          >
-            Draw New Shape
-          </button>
-        </>
-      ) : (
-        <>
-          <button className="submit-button" onClick={handleAnimate}>
-            Animate
-          </button>
-          <Canvas
-            className="gears-canvas w-full h-full block"
-            draw={drawGears}
-          />
-        </>
-      )}
-    </div>
+  return screen.width > 700 ? (
+    isSubmit ? (
+      <div className="gears-output">
+        {isAnimate ? (
+          <>
+            <Canvas
+              className="gears-canvas w-full h-full block"
+              draw={animateGears}
+            />
+            <button
+              className="submit-button"
+              onClick={() => {
+                setIsAnimate(false);
+                setIsSubmit(false);
+                setMousePositions([]);
+                setGearOne([]);
+                setGearTwo([]);
+                drawPositionsRef.current = [];
+                prevMouseDown.current = false;
+                setIsOverButton(false);
+              }}
+            >
+              Draw New Shape
+            </button>
+          </>
+        ) : (
+          <>
+            <button className="submit-button" onClick={handleAnimate}>
+              Animate
+            </button>
+            <Canvas
+              className="gears-canvas w-full h-full block"
+              draw={drawGears}
+            />
+          </>
+        )}
+      </div>
+    ) : (
+      <div className="canvas-container">
+        <p className="instruction-text">
+          Draw shape using the mouse to be converted to parametric equation
+        </p>
+        <Canvas className="w-full h-full block" draw={draw} />
+        <button
+          ref={buttonRef}
+          className="submit-button"
+          onClick={handleSubmit}
+        >
+          Submit
+        </button>
+      </div>
+    )
   ) : (
-    <div className="canvas-container">
-      <p className="instruction-text">
-        Draw shape to be converted to parametric equation
+    <div className="mobile-container">
+      <h1 className="mobile-header">Parametric Gear Generator</h1>
+      <p className="mobile-instruction">
+        Please visit on desktop to use the gear generator
       </p>
-      <Canvas className="w-full h-full block" draw={draw} />
-      <button ref={buttonRef} className="submit-button" onClick={handleSubmit}>
-        Submit
-      </button>
     </div>
   );
 }
