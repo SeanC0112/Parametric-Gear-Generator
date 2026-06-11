@@ -237,8 +237,50 @@ function App() {
         gearTwoY + gearTwoDist + verticalLineLength,
         'white'
       );
+
+      //blocker lines
+
+      drawLine(
+        ctx,
+        canvas,
+        gearOneX + gearOneDist + horizontalLineLength,
+        gearOneY - blockerLineLength,
+        gearOneX + gearOneDist + horizontalLineLength,
+        gearOneY + blockerLineLength,
+        'white'
+      );
+      drawLine(
+        ctx,
+        canvas,
+        gearTwoX - blockerLineLength,
+        gearTwoY + gearTwoDist + verticalLineLength,
+        gearTwoX + blockerLineLength,
+        gearTwoY + gearTwoDist + verticalLineLength,
+        'white'
+      );
+
+      //adjusting lines
+
+      drawLine(
+        ctx,
+        canvas,
+        gearOneX + gearOneDist + horizontalLineLength,
+        gearTwoY + gearTwoDist + 2 * verticalLineLength,
+        gearOneX + gearOneDist + 2 * horizontalLineLength,
+        gearTwoY + gearTwoDist + 2 * verticalLineLength,
+        'white'
+      );
+      drawLine(
+        ctx,
+        canvas,
+        gearOneX + gearOneDist + 2 * horizontalLineLength,
+        gearTwoY + gearTwoDist + verticalLineLength,
+        gearOneX + gearOneDist + 2 * horizontalLineLength,
+        gearTwoY + gearTwoDist + 2 * verticalLineLength,
+        'white'
+      );
     },
-    [gearOne, gearTwo, animationStart]
+    [gearOne, gearTwo, animationStart, normScalar]
   );
 
   return isSubmit ? (
