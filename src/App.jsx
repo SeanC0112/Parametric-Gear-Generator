@@ -286,13 +286,6 @@ function App() {
         'white'
       );
 
-      setDrawPositions((prev) => [
-        ...prev,
-        {
-          x: gearOneX + gearOneDist + 2 * horizontalLineLength,
-          y: gearTwoY + gearTwoDist + 2 * verticalLineLength,
-        },
-      ]);
       ctx.strokeStyle = 'white';
       drawPositionsRef.current = [
         ...drawPositionsRef.current,
