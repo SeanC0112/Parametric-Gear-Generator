@@ -15,7 +15,6 @@ function App() {
   const [mousePositions, setMousePositions] = useState([]);
   const [savedMousePositions, setSavedMousePositions] = useState([]);
 
-  const [drawPositions, setDrawPositions] = useState([]);
   const drawPositionsRef = useRef([]);
 
   const [normScalar, setNormScalar] = useState(0);
@@ -163,11 +162,9 @@ function App() {
     (ctx, canvas) => {
       let fps = 60;
       let currentTime = performance.now();
-      let deltaTime = (currentTime - animationStart) % (fps * 1000);
-      let angle = (deltaTime / 1000) * fps; // Rotate 60 degrees per second
-      if (angle < 10) {
-        setDrawPositions([]);
-
+      let deltaTime = currentTime - animationStart;
+      let angle = ((deltaTime / 1000) * fps) % 360; // Rotate 60 degrees per second
+      if (angle < 1) {
         // Reset when angle < 1
         drawPositionsRef.current = [];
       }
