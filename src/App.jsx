@@ -321,6 +321,10 @@ function App() {
             onClick={() => {
               setIsAnimate(false);
               setIsSubmit(false);
+              setMousePositions([]);
+              setGearOne([]);
+              setGearTwo([]);
+              drawPositionsRef.current = [];
             }}
           >
             Draw New Shape
