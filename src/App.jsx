@@ -184,7 +184,7 @@ function App() {
             Math.pow(gearOne[prevIndex].x, 2) +
               Math.pow(gearOne[prevIndex].y, 2)
           )) *
-        ((fraqIndex - prevIndex) % 1);
+        (fraqIndex % 1);
 
       let gearOneDist =
         Math.sqrt(
@@ -199,7 +199,7 @@ function App() {
             Math.pow(gearTwo[prevIndex].x, 2) +
               Math.pow(gearTwo[prevIndex].y, 2)
           )) *
-        ((fraqIndex - prevIndex) % 1);
+        (fraqIndex % 1);
 
       let gearTwoDist =
         Math.sqrt(
