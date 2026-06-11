@@ -1,4 +1,4 @@
-export function generateGearsFromPath(path, baseRadius) {
+export function generateGearsFromPath(path, baseRadius, normScalar) {
   let xPath = [];
   let yPath = [];
 
@@ -11,7 +11,7 @@ export function generateGearsFromPath(path, baseRadius) {
 
   //normalize size
   // let toothScalar = Math.min(200 / Math.max(maxX - minX, maxY - minY), 1);
-  let toothScalar = 200 / Math.max(maxX - minX, maxY - minY);
+  let toothScalar = normScalar / Math.max(maxX - minX, maxY - minY);
 
   path.forEach((point, index) => {
     xPath.push({

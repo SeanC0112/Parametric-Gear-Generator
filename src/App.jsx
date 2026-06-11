@@ -15,6 +15,8 @@ function App() {
   const [mousePositions, setMousePositions] = useState([]);
   const [savedMousePositions, setSavedMousePositions] = useState([]);
 
+  const [normScalar, setNormScalar] = useState(0);
+
   const [gearOne, setGearOne] = useState([]);
   const [gearTwo, setGearTwo] = useState([]);
 
@@ -36,13 +38,14 @@ function App() {
       console.log('hi');
       const { xPath, yPath } = generateGearsFromPath(
         mousePositions.slice(0, -2),
-        50
+        50,
+        normScalar
       );
       setGearOne(xPath);
       setGearTwo(yPath);
       setIsSubmit(true);
     }
-  }, [mousePositions, setMousePositions]);
+  }, [mousePositions, setMousePositions, normScalar]);
 
   const handleAnimate = useCallback(() => {
     setIsAnimate(true);
@@ -107,6 +110,7 @@ function App() {
 
   const draw = useCallback(
     (ctx, canvas) => {
+      setNormScalar(Math.min(canvas.width, canvas.height) / 6);
       if (!prevMouseDown.current && mouseDown && !isOverButton) {
         ctx.beginPath();
         ctx.clearRect(0, 0, canvas.width, canvas.height);
@@ -207,8 +211,13 @@ function App() {
         ) + deltaGearTwo;
 
       //TODO yay magic numbers i need to fix (half of the normalization scalar fo the gear gen code)
-      let horizontalLineLength = (gearTwoX - gearOneX - 100) / 2;
-      let verticalLineLength = (gearOneY - gearTwoY - 100) / 2;
+      let horizontalLineLength =
+        (gearTwoX - gearOneX - normScalar / 2 - 25) / 3;
+      let verticalLineLength = (gearOneY - gearTwoY - normScalar / 2 - 25) / 3;
+
+      let blockerLineLength = 75 + normScalar;
+
+      //First lines
 
       drawLine(
         ctx,
