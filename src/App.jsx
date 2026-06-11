@@ -174,6 +174,7 @@ function App() {
       let fraqIndex = (angle / 360) * (arrLength - 1);
       let prevIndex = Math.floor(fraqIndex) % (arrLength - 1);
       let nextIndex = (prevIndex + 1) % (arrLength - 1);
+      console.log(gearOne.length, gearTwo.length);
 
       let deltaGearOne =
         (Math.sqrt(
@@ -183,7 +184,7 @@ function App() {
             Math.pow(gearOne[prevIndex].x, 2) +
               Math.pow(gearOne[prevIndex].y, 2)
           )) *
-        (fraqIndex - prevIndex);
+        ((fraqIndex - prevIndex) % 1);
 
       let gearOneDist =
         Math.sqrt(
@@ -198,7 +199,7 @@ function App() {
             Math.pow(gearTwo[prevIndex].x, 2) +
               Math.pow(gearTwo[prevIndex].y, 2)
           )) *
-        (fraqIndex - prevIndex);
+        ((fraqIndex - prevIndex) % 1);
 
       let gearTwoDist =
         Math.sqrt(
