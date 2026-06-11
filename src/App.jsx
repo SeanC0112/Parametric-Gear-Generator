@@ -15,6 +15,8 @@ function App() {
   const [mousePositions, setMousePositions] = useState([]);
   const [savedMousePositions, setSavedMousePositions] = useState([]);
 
+  const [drawPositions, setDrawPositions] = useState([]);
+
   const [normScalar, setNormScalar] = useState(0);
 
   const [gearOne, setGearOne] = useState([]);
@@ -110,7 +112,7 @@ function App() {
 
   const draw = useCallback(
     (ctx, canvas) => {
-      setNormScalar(Math.min(canvas.width, canvas.height) / 6);
+      setNormScalar(Math.min(canvas.width, canvas.height) / 5);
       if (!prevMouseDown.current && mouseDown && !isOverButton) {
         ctx.beginPath();
         ctx.clearRect(0, 0, canvas.width, canvas.height);
@@ -162,6 +164,9 @@ function App() {
       let currentTime = performance.now();
       let deltaTime = (currentTime - animationStart) % (fps * 1000);
       let angle = (deltaTime / 1000) * fps; // Rotate 60 degrees per second
+      if (angle < 1) {
+        setDrawPositions([]);
+      }
 
       let gearOneX = canvas.width / 4;
       let gearOneY = (2 * canvas.height) / 3;
@@ -279,6 +284,23 @@ function App() {
         gearTwoY + gearTwoDist + 2 * verticalLineLength,
         'white'
       );
+
+      setDrawPositions((prev) => [
+        ...prev,
+        {
+          x: gearOneX + gearOneDist + 2 * horizontalLineLength,
+          y: gearTwoY + gearTwoDist + 2 * verticalLineLength,
+        },
+      ]);
+      ctx.strokeStyle = 'white';
+      if (drawPositions.length > 1) {
+        ctx.beginPath();
+        drawPositions.forEach((pos, i) => {
+          if (i === 0) ctx.moveTo(pos.x, pos.y);
+          else ctx.lineTo(pos.x, pos.y);
+        });
+        ctx.stroke();
+      }
     },
     [gearOne, gearTwo, animationStart, normScalar]
   );
