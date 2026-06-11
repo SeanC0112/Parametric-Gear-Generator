@@ -311,10 +311,21 @@ function App() {
   return isSubmit ? (
     <div className="gears-output">
       {isAnimate ? (
-        <Canvas
-          className="gears-canvas w-full h-full block"
-          draw={animateGears}
-        />
+        <>
+          <Canvas
+            className="gears-canvas w-full h-full block"
+            draw={animateGears}
+          />
+          <button
+            className="submit-button"
+            onClick={() => {
+              setIsAnimate(false);
+              setIsSubmit(false);
+            }}
+          >
+            Draw New Shape
+          </button>
+        </>
       ) : (
         <>
           <button className="submit-button" onClick={handleAnimate}>
