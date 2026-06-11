@@ -43,9 +43,14 @@ function App() {
         50,
         normScalar
       );
-      setGearOne(xPath);
-      setGearTwo(yPath);
-      setIsSubmit(true);
+      // Only submit if gears have content
+      if (xPath.length > 1 && yPath.length > 1) {
+        setGearOne(xPath);
+        setGearTwo(yPath);
+        setIsSubmit(true);
+      } else {
+        console.log('Gears are empty, cannot submit');
+      }
     }
   }, [mousePositions, setMousePositions, normScalar]);
 
@@ -60,6 +65,8 @@ function App() {
   useEffect(() => {
     const el = buttonRef.current;
 
+    if (!el) return;
+
     const handleMouseEnter = () => setIsOverButton(true);
     const handleMouseLeave = () => setIsOverButton(false);
 
@@ -70,7 +77,7 @@ function App() {
       el.removeEventListener('mouseenter', handleMouseEnter);
       el.removeEventListener('mouseleave', handleMouseLeave);
     };
-  }, []);
+  }, [isSubmit]);
 
   useEffect(() => {
     const handleMouseDown = (event) => {
@@ -325,6 +332,8 @@ function App() {
               setGearOne([]);
               setGearTwo([]);
               drawPositionsRef.current = [];
+              prevMouseDown.current = false;
+              setIsOverButton(false);
             }}
           >
             Draw New Shape
