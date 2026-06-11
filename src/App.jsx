@@ -16,6 +16,7 @@ function App() {
   const [savedMousePositions, setSavedMousePositions] = useState([]);
 
   const [drawPositions, setDrawPositions] = useState([]);
+  const drawPositionsRef = useRef([]);
 
   const [normScalar, setNormScalar] = useState(0);
 
@@ -164,8 +165,11 @@ function App() {
       let currentTime = performance.now();
       let deltaTime = (currentTime - animationStart) % (fps * 1000);
       let angle = (deltaTime / 1000) * fps; // Rotate 60 degrees per second
-      if (angle < 1) {
+      if (angle < 10) {
         setDrawPositions([]);
+
+        // Reset when angle < 1
+        drawPositionsRef.current = [];
       }
 
       let gearOneX = canvas.width / 4;
@@ -293,9 +297,18 @@ function App() {
         },
       ]);
       ctx.strokeStyle = 'white';
-      if (drawPositions.length > 1) {
+      drawPositionsRef.current = [
+        ...drawPositionsRef.current,
+        {
+          x: gearOneX + gearOneDist + 2 * horizontalLineLength,
+          y: gearTwoY + gearTwoDist + 2 * verticalLineLength,
+        },
+      ];
+
+      // Draw immediately (no async wait)
+      if (drawPositionsRef.current.length > 1) {
         ctx.beginPath();
-        drawPositions.forEach((pos, i) => {
+        drawPositionsRef.current.forEach((pos, i) => {
           if (i === 0) ctx.moveTo(pos.x, pos.y);
           else ctx.lineTo(pos.x, pos.y);
         });
