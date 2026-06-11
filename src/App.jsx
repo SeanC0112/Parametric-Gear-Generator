@@ -3,7 +3,12 @@ import Canvas from './canvas.jsx';
 import reactLogo from './assets/react.svg';
 import viteLogo from './assets/vite.svg';
 import heroImg from './assets/hero.png';
-import { generateGearsFromPath } from './util.js';
+import {
+  generateGearsFromPath,
+  drawCircle,
+  drawGear,
+  drawLine,
+} from './util.js';
 import './App.css';
 
 function App() {
@@ -126,50 +131,6 @@ function App() {
     [mouseDown, mousePositions, isOverButton]
   );
 
-  const drawCircle = (ctx, canvas, x, y, radius, fillStyle) => {
-    ctx.fillStyle = fillStyle;
-    ctx.beginPath();
-    ctx.arc(x, y, radius, 0, 2 * Math.PI);
-    ctx.fill();
-    ctx.stroke();
-  };
-
-  const drawLine = (ctx, canvas, x1, y1, x2, y2, strokeStyle) => {
-    ctx.strokeStyle = strokeStyle;
-    ctx.beginPath();
-    ctx.moveTo(x1, y1);
-    ctx.lineTo(x2, y2);
-    ctx.stroke();
-  };
-
-  const drawGear = (ctx, canvas, gear, centerX, centerY, angle, scale) => {
-    ctx.save();
-
-    ctx.translate(centerX, centerY);
-
-    angle = (angle * Math.PI) / 180;
-    ctx.rotate(angle);
-
-    ctx.fillStyle = 'white';
-    ctx.strokeStyle = 'white';
-
-    ctx.beginPath();
-
-    gear.forEach((point, index) => {
-      if (index === 0) {
-        ctx.moveTo(point.x * scale, point.y * scale);
-      } else {
-        ctx.lineTo(point.x * scale, point.y * scale);
-      }
-    });
-    ctx.fill();
-    ctx.stroke();
-
-    drawCircle(ctx, canvas, 0, 0, 10, '#0f3460');
-
-    ctx.restore();
-  };
-
   const drawGears = useCallback(
     (ctx, canvas) => {
       ctx.clearRect(0, 0, canvas.width, canvas.height);
@@ -195,7 +156,7 @@ function App() {
     (ctx, canvas) => {
       let fps = 60;
       let currentTime = performance.now();
-      let deltaTime = currentTime - animationStart;
+      let deltaTime = (currentTime - animationStart) % (fps * 1000);
       let angle = (deltaTime / 1000) * fps; // Rotate 60 degrees per second
 
       let gearOneX = canvas.width / 4;
