@@ -1,16 +1,1 @@
-# React + Vite
-
-This template provides a minimal setup to get React working in Vite with HMR and some ESLint rules.
-
-Currently, two official plugins are available:
-
-- [@vitejs/plugin-react](https://github.com/vitejs/vite-plugin-react/blob/main/packages/plugin-react) uses [Oxc](https://oxc.rs)
-- [@vitejs/plugin-react-swc](https://github.com/vitejs/vite-plugin-react/blob/main/packages/plugin-react-swc) uses [SWC](https://swc.rs/)
-
-## React Compiler
-
-The React Compiler is not enabled on this template because of its impact on dev & build performances. To add it, see [this documentation](https://react.dev/learn/react-compiler/installation).
-
-## Expanding the ESLint configuration
-
-If you are developing a production application, we recommend using TypeScript with type-aware lint rules enabled. Check out the [TS template](https://github.com/vitejs/vite/tree/main/packages/create-vite/template-react-ts) for information on how to integrate TypeScript and [`typescript-eslint`](https://typescript-eslint.io) in your project.
+My project is a parametric gear generator. It's meant to demonstrate how a function is broken up into x and y components as functions of t. I wanted to make it easy to use and understand, so I made the drawing function simple by just using mousedown. The rest of the website is easily accesible just by pressing labeled buttons. I'm especially happy with the animations, as if soemone is unable to visualize with solely the static gears the animations help show how the shape is actually drawn using the gears. I made this project as part of my Teaching Assistant position to help Precalculus students understand and visualize parametric functions. In the future, I hope to eventually make a machine uses 3d prints of the gears and actually draws the shape on paper.
