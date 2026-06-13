@@ -55,7 +55,16 @@ export function drawLine(ctx, canvas, x1, y1, x2, y2, strokeStyle) {
   ctx.stroke();
 }
 
-export function drawGear(ctx, canvas, gear, centerX, centerY, angle, scale) {
+export function drawGear(
+  ctx,
+  canvas,
+  gear,
+  centerX,
+  centerY,
+  angle,
+  scale,
+  text
+) {
   ctx.save();
 
   ctx.translate(centerX, centerY);
@@ -79,6 +88,16 @@ export function drawGear(ctx, canvas, gear, centerX, centerY, angle, scale) {
   ctx.stroke();
 
   drawCircle(ctx, canvas, 0, 0, 10, '#0f3460');
+  ctx.restore();
+  ctx.save();
+
+  ctx.translate(centerX, centerY);
+
+  ctx.font = '15px Arial';
+  ctx.fillStyle = 'white';
+  ctx.textAlign = 'center';
+  ctx.textBaseline = 'middle';
+  ctx.fillText(text, 0, 0);
 
   ctx.restore();
 }

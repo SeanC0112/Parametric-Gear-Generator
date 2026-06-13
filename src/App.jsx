@@ -150,7 +150,16 @@ function App() {
       // ctx.fillStyle = 'white';
       // ctx.fillRect(0, 0, canvas.width, canvas.height);
 
-      drawGear(ctx, canvas, gearOne, canvas.width / 4, canvas.height / 2, 0, 1);
+      drawGear(
+        ctx,
+        canvas,
+        gearOne,
+        canvas.width / 4,
+        canvas.height / 2,
+        0,
+        1,
+        'X'
+      );
 
       drawGear(
         ctx,
@@ -159,7 +168,8 @@ function App() {
         (3 * canvas.width) / 4,
         canvas.height / 2,
         0,
-        1
+        1,
+        'Y'
       );
     },
     [gearOne, gearTwo]
@@ -184,8 +194,8 @@ function App() {
 
       ctx.clearRect(0, 0, canvas.width, canvas.height);
 
-      drawGear(ctx, canvas, gearOne, gearOneX, gearOneY, angle, 1);
-      drawGear(ctx, canvas, gearTwo, gearTwoX, gearTwoY, angle + 90, 1);
+      drawGear(ctx, canvas, gearOne, gearOneX, gearOneY, angle, 1, 'X');
+      drawGear(ctx, canvas, gearTwo, gearTwoX, gearTwoY, angle + 90, 1, 'Y');
 
       let arrLength = gearOne.length;
       let fraqIndex = (angle / 360) * (arrLength - 1);
